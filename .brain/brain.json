@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "schema_version": "1.1.0",
+    "awf_version": "4.0.2"
+  },
+  "project": {
+    "name": "ModelChecker-Go",
+    "type": "Desktop Application",
+    "status": "Active Development"
+  },
+  "tech_stack": {
+    "frontend": "HTML, Vanilla CSS, Vanilla JS, Wails v2",
+    "backend": "Go (Golang)",
+    "ui_style": "Modern Dark, Glassmorphism"
+  },
+  "features": [
+    {
+      "name": "Smart Key Extraction",
+      "description": "Tự động trích xuất các key AIza... từ văn bản thô sử dụng Regex (Go)."
+    },
+    {
+      "name": "Concurrent Key Checking",
+      "description": "Kiểm tra hàng loạt key song song bằng Goroutines để lấy danh sách models."
+    },
+    {
+      "name": "Vietnamese Localization",
+      "description": "Giao diện và thông báo lỗi được Việt hóa 100%."
+    },
+    {
+      "name": "Active Model Testing (Ping)",
+      "description": "Cho phép người dùng gửi prompt thử nghiệm ('hi') tới từng model để xác minh quyền thực thi."
+    }
+  ],
+  "api_endpoints": [
+    {
+      "path": "App.ScanKeys(text string)",
+      "explained": "Nhận văn bản thô, trích xuất key và trả về kết quả kiểm tra đồng thời cho tất cả các key."
+    },
+    {
+      "path": "App.TestModel(apiKey string, modelName string)",
+      "explained": "Gửi một prompt 'hi' tới model cụ thể để kiểm tra xem nó có phản hồi hay không."
+    }
+  ],
+  "conventions": {
+    "naming": "PascalCase for Go exported functions, camelCase for JS",
+    "localization": "Hardcoded Vietnamese strings for simplicity in current scope"
+  }
+}

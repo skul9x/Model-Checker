@@ -1,0 +1,41 @@
+{
+  "updated_at": "2026-03-17T09:28:00Z",
+  "working_on": {
+    "feature": "Active Model Testing & Localization",
+    "task": "Completed migration and initial upgrades",
+    "status": "completed",
+    "files": [
+      "scanner.go",
+      "frontend/src/main.js",
+      "frontend/src/app.css"
+    ],
+    "notes": "Ứng dụng đã chạy ổn định với đầy đủ tính năng Việt hóa và Test Model."
+  },
+  "recent_changes": [
+    {
+      "timestamp": "2026-03-17T08:40:00Z",
+      "type": "migration",
+      "description": "Migrated from Python to Go + Wails"
+    },
+    {
+      "timestamp": "2026-03-17T08:50:00Z",
+      "type": "localization",
+      "description": "Implemented full Vietnamese localization"
+    },
+    {
+      "timestamp": "2026-03-17T09:15:00Z",
+      "type": "feature",
+      "description": "Added Active Model Testing (Ping) feature"
+    }
+  ],
+  "decisions_made": [
+    {
+      "decision": "Sử dụng Wails v2 thay vì Fyne",
+      "reason": "Ưu tiên linh hoạt trong thiết kế UI (CSS/JS) và người dùng yêu cầu Wails."
+    },
+    {
+      "decision": "Dịch trực tiếp mã nguồn",
+      "reason": "Dự án nhỏ, dịch trực tiếp giúp triển khai nhanh và tránh overhead của thư viện i18n."
+    }
+  ]
+}
