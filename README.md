@@ -1,100 +1,99 @@
-# 🚀 Gemini Key Inspector PRO (Go Version)
+# 🚀 Model-Checker-Go
 
 ![Go](https://img.shields.io/badge/Language-Go-blue?logo=go)
 ![Wails](https://img.shields.io/badge/Framework-Wails_v2-red?logo=wails)
 ![Status](https://img.shields.io/badge/Status-Active-success)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-lightgrey)
 
-**Gemini Key Inspector PRO** là một công cụ mạnh mẽ được xây dựng bằng **Go** và framework **Wails**, cho phép người dùng trích xuất, kiểm tra và quản lý các API Key của Google Gemini một cách nhanh chóng và hiệu quả. Với sức mạnh của Goroutines, ứng dụng có thể xử lý hàng trăm key cùng lúc mà vẫn đảm bảo giao diện mượt mà.
+**Model-Checker-Go** là một ứng dụng Desktop chuyên nghiệp được xây dựng bằng **Go** và **Wails**. Ứng dụng cung cấp các công cụ mạnh mẽ để trích xuất tự động, kiểm tra hàng loạt và quản lý thông tin các API Key của Google Gemini một cách nhanh chóng. 
+
+Giúp cho các nhà phát triển dễ dàng xác minh quyền và khả năng hoạt động của từng API Key một cách an toàn và tiện lợi.
 
 ---
 
-## ✨ Tính năng chính
+## ✨ Tính năng nổi bật
 
-- **🔍 Trích xuất thông minh**: Tự động tìm kiếm các chuỗi API Key định dạng `AIza...` từ bất kỳ đoạn văn bản thô nào.
-- **⚡ Kiểm tra đa luồng**: Sử dụng sức mạnh tối đa của CPU để xác minh tình trạng hoạt động (ACTIVE/ERROR) của hàng loạt key trong tích tắc.
-- **📊 Thông tin chi tiết**: Hiển thị danh sách tất cả các AI Model mà mỗi Key được phép truy cập (Gemini 1.5 Pro, Flash, v.v.).
-- **🧪 Test Model trực tiếp**: Cho phép gửi yêu cầu thử nghiệm ("hi") đến một model cụ thể để xác minh quyền thực thi thực tế.
-- **🎨 Giao diện hiện đại**: Thiết kế theo phong cách Glassmorphism với chế độ tối (Dark Mode) mặc định, mang lại trải nghiệm chuyên nghiệp.
-- **🌐 Việt hóa hoàn toàn**: Giao diện và thông báo lỗi được tối ưu riêng cho người dùng Việt Nam.
+- **🔍 Trích xuất tự động thông minh**: Ứng dụng tự động tìm kiếm các mẫu API Key dạng `AIza...` từ file log, JSON hoặc văn bản thô. Không giới hạn số lượng key cần trích xuất.
+- **⚡ Kiểm tra đa luồng (Concurrent Testing)**: Tận dụng ưu điểm của Goroutines trong Go để chia nhỏ công việc, bắt nhanh tình trạng hoạt động (HOẠT ĐỘNG / LỖI) của hàng loạt key trong cùng một khoảng thời gian ngắn.
+- **⚡ Kiểm tra tất cả (Test All Models)**: Thử nghiệm thực tế toàn bộ các Model khả dụng của tất cả API Key chỉ với một cú click chuột! Kết quả cập nhật realtime và báo cáo rõ ràng trạng thái.
+- **📊 Hiển thị thông tin chi tiết**: Đối với mỗi key hoạt động, liệt kê danh sách toàn bộ các Model khả dụng (như Gemini 1.5 Pro, Flash...) và quyền hạn của nó.
+- **📋 Quản lý tiện lợi**: Hỗ trợ sao chép nhanh chuỗi các Model hoạt động ổn định.
+- **🎨 Giao diện Vibe Coding (Glassmorphism)**: Tối ưu UI/UX với phong cách hiện đại Glassmorphism, hiệu ứng chuyển cảnh mượt mà, dark mode đẹp mắt.
+- **🌐 100% Tiếng Việt**: Toàn bộ hệ thống, hướng dẫn cũng như cảnh báo đều đã được Việt hóa.
 
 ---
 
-## 📂 Cấu trúc thư mục
+## 💻 Công nghệ sử dụng
+
+Ứng dụng được thiết kế theo kiến trúc ứng dụng Desktop lai (Hybrid Desktop App):
+- **Core Backend**: `Go (Golang)` xử lý logic cốt lõi như Regex tách string, Call API đồng thời qua hệ thống Goroutines tối ưu tốc độ và tiết kiệm bộ nhớ.
+- **Desktop Framework**: `Wails v2` đóng gói Web frontend vào trong Native Window mượt mà.
+- **Frontend UI**: Thiết kế thuần `Vanilla JS`, `HTML` và `CSS`. Không cần framework cồng kềnh nhằm giữ dung lượng file nhẹ nhất và khởi động trong tíc tắc.
+
+---
+
+## 📂 Thực đơn / Cấu trúc thư mục
 
 ```text
-ModelChecker-Go/
-├── build/              # Chứa các file build và asset nền tảng (icons, v.v.)
-│   └── bin/            # Nơi chứa file thực thi sau khi build
-├── frontend/           # Mã nguồn giao diện (Vite/Vanilla JS/CSS)
-│   ├── src/            # Các file logic và giao diện chính
-│   └── dist/           # File frontend đã được build (để nhúng vào Go)
-├── scanner.go          # Logic cốt lõi: Regex, kiểm tra API, Goroutines
-├── app.go              # Cầu nối (binding) giữa Go và Frontend
-├── main.go             # Điểm khởi đầu của ứng dụng
-├── wails.json          # Cấu hình dự án Wails
-└── .brain/             # (Tùy chọn) Lưu trữ dữ liệu context của AI Assistant
+Model-Checker-Go/
+├── build/              # Các biên dịch viên của hệ thống và assets
+├── docs/               # Chứa các tài liệu phát triển (API, Brief...)
+├── frontend/           # Toàn bộ mã nguồn giao diện
+│   ├── src/            # File JS, CSS gốc (main.js, app.css)
+│   └── dist/           # Thư mục web build (vite) để Wails inject
+├── scanner.go          # Chứa logic backend (tìm Regex, hàm Ping API)
+├── app.go              # Kết nối giữa Frontend (JS) và Backend (Go)
+├── main.go             # Entry point (file khởi chạy gốc) của hệ thống
+├── go.mod / wails.json # File cấu hình thư viện Go và Wails 
+└── .brain/             # Setup tư duy và lịch sử làm việc của AI
 ```
 
 ---
 
-## 🛠️ Hướng dẫn cài đặt (Dành cho nhà phát triển)
+## 🛠️ Hướng dẫn cài đặt
 
-### Yêu cầu hệ thống:
-1.  **Go** (Phiên bản 1.21 trở lên)
-2.  **Node.js** & **npm** (Để build frontend)
-3.  **Wails CLI**: Cài đặt bằng lệnh:
-    ```bash
-    go install github.com/wailsapp/wails/v2/cmd/wails@latest
-    ```
-4.  **Dependencies (Linux)**: Nếu bạn dùng Linux, hãy cài thêm:
-    ```bash
-    sudo apt install libgtk-3-dev libwebkit2gtk-4.1-dev
-    ```
+Bạn cần có một môi trường chuẩn bị sẵn để compile từ source code:
 
-### Các bước cài đặt:
-1.  Clone repository:
-    ```bash
-    git clone https://github.com/skul9x/Model-Checker.git
-    cd ModelChecker-Go
-    ```
-2.  Cài đặt dependencies frontend:
-    ```bash
-    cd frontend && npm install && cd ..
-    ```
+1. Dọn dẹp máy tính với [Go (>= 1.21)](https://go.dev/dl/) và [Node.js](https://nodejs.org/).
+2. Cài đặt framework Wails CLI:
+   ```bash
+   go install github.com/wailsapp/wails/v2/cmd/wails@latest
+   ```
+3. *(Dành riêng cho Linux)*: Bạn cần gói thư viện webview
+   ```bash
+   sudo apt install libgtk-3-dev libwebkit2gtk-4.1-dev
+   ```
+4. Clone repo về máy:
+   ```bash
+   git clone https://github.com/skul9x/Model-Checker.git
+   cd Model-Checker
+   ```
+5. Chạy môi trường dev để code khởi động realtime:
+   ```bash
+   wails dev
+   ```
 
 ---
 
-## 🚀 Hướng dẫn sử dụng
+## 🚀 Cách sử dụng ứng dụng
 
-1.  **Mở ứng dụng**: Chạy file `ModelChecker-Go.exe`.
-2.  **Nhập dữ liệu**: Dán đoạn văn bản chứa API Key vào ô nhập liệu (có thể chứa nhiều nội dung rác, ứng dụng sẽ tự lọc).
-3.  **Quét Key**: Nhấn nút "Bắt đầu quét". Kết quả sẽ hiển thị ngay lập tức trong bảng bên dưới.
-4.  **Xem chi tiết**: Nhấn vào từng Key để xem danh sách Model khả dụng.
-5.  **Thử nghiệm**: Nhấn nút "Kiểm tra" cạnh tên Model để xác minh xem Model đó có hoạt động thực tế hay không.
+1. **Khởi chạy ứng dụng**, giao diện màn hình nhập văn bản sẽ hiện ra.
+2. Tại khu vực đầu vào, paste/dán những mã JSON, log chứa rất nhiều nội dung lộn xộn. (App sẽ tự dùng Regex bắt từ `AIza...`).
+3. Click thanh **QUÉT & KIỂM TRA KEY**.
+4. Lúc này danh sách Key đã được phân loại (Hoạt động hay chết). 
+5. Tại panel KEY CÒN SỐNG: bạn có thể bấm Test riêng lẻ cho từng Model, HOẶC ấn **⚡ KIỂM TRA TẤT CẢ** để chạy trọn bộ 1 lần cho lẹ.
+6. Kết thúc, ứng dụng có nút Copy Model list cho bạn chuyển sang tool khác nhẹ nhàng. 
 
 ---
 
-## 🏗️ Cách Build ứng dụng
-
-### 1. Build file thực thi (.exe cho Windows)
-Để đóng gói ứng dụng thành một file duy nhất:
-```bash
-wails build -platform windows/amd64
-```
-Kết quả sẽ nằm tại `build/bin/ModelChecker-Go.exe`.
-
-### 2. Tạo bộ cài đặt (Installer)
-Nếu bạn đã cài đặt **NSIS**, bạn có thể tạo bộ cài đặt chuyên nghiệp:
-```bash
-wails build -platform windows/amd64 -nsis
-```
+## 🛡️ Vấn đề Bảo mật & API Key
+- **Quy tắc An Toàn**: File mã nguồn (được public trên github) tuyệt đối KHÔNG chứa bất cứ API Key hợp lệ nào (VD: các chuỗi khởi đầu bằng `AIza...`). Mã nguồn đã được team kiểm duyệt nghiêm ngặt.
+- Github Repo cũng có file `.gitignore` đầy đủ để không bị lọt rác ra ngoài hệ thống.
 
 ---
 
 ## 📜 Giấy phép & Bản quyền
-Bản quyền © 2026 **Nguyễn Duy Trường**.
-Sản phẩm được hỗ trợ phát triển bởi **Antigravity AI Assistant**.
 
----
-*Chúc bạn có những trải nghiệm tuyệt vời với Gemini Key Inspector PRO!*
+Copyright 2026 Nguyễn Duy Trường
+
+Mã nguồn được phân phối độc quyền. Mọi quyền được bảo lưu. Việc sử dụng, sao chép hoặc phân phối lại không có sự cho phép sẽ vi phạm thỏa thuận quyền sở hữu.

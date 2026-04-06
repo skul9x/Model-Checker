@@ -64,4 +64,5 @@ Thumbs.db
 *.swo
 
 # Project specific
-# .brain is NOT ignored as per user request
+# .brain is forcefully un-ignored as per user request
+!.brain/
