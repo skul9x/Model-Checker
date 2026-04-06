@@ -2,8 +2,11 @@
 
 Toàn bộ lịch sử thay đổi của dự án Gemini Key Inspector Pro (Phiên bản Go).
 
-## [1.1.0] - 2026-03-17
+## [1.1.0] - 2026-04-06
 ### Added
+- Tính năng **Kiểm tra tất cả (Test All Models)**: Kiểm tra hàng loạt tất cả models cùng lúc, tiết kiệm tối đa thời gian.
+- Bổ sung thanh tiến trình (Progress bar) và hiển thị kết quả kiểm tra tự động (thành công/lỗi).
+- Nút sao chép dánh sách các models hoạt động (Working Models Copy).
 - Tính năng **Kiểm tra Model (Active Ping)**: Gửi prompt "hi" để xác minh model thực sự hoạt động.
 - Hiển thị phản hồi thực tế từ model khi kiểm tra thành công.
 - Icon ✅/❌ và thông báo lỗi chi tiết cho từng model.
