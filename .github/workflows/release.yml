@@ -1,0 +1,139 @@
+name: Wails Build & Release
+
+on:
+  push:
+    tags:
+      - 'v*' # Chạy khi bạn push một tag bắt đầu bằng 'v', ví dụ: v1.2.0
+
+permissions:
+  contents: write # Cho phép upload lên Release
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+          check-latest: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Wails
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+      - name: Build Windows
+        shell: bash
+        run: |
+          wails build -platform windows/amd64 -nsis
+
+      - name: Rename Installer
+        shell: bash
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          mv build/bin/ModelChecker-Go-amd64-installer.exe build/bin/ModelChecker-Go-${VERSION}-installer.exe
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-bin
+          path: build/bin/ModelChecker-Go-*-installer.exe
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev
+
+      - name: Install Wails
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+      - name: Build Linux
+        run: |
+          wails build -platform linux/amd64
+
+      - name: Create Debian Package
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          mkdir -p deb-pkg/usr/bin
+          mkdir -p deb-pkg/usr/share/applications
+          mkdir -p deb-pkg/usr/share/pixmaps
+          mkdir -p deb-pkg/DEBIAN
+          
+          # Copy binary and icon
+          cp build/bin/ModelChecker-Go deb-pkg/usr/bin/model-checker-go
+          cp build/appicon.png deb-pkg/usr/share/pixmaps/model-checker-go.png
+          
+          # Control file
+          cat <<EOF > deb-pkg/DEBIAN/control
+          Package: model-checker-go
+          Version: ${VERSION}
+          Section: utils
+          Priority: optional
+          Architecture: amd64
+          Maintainer: Nguyễn Duy Trường
+          Description: Gemini Key Inspector PRO (Go Version)
+           A professional desktop application for Google Gemini API Key management.
+          EOF
+          
+          # Desktop entry
+          cat <<EOF > deb-pkg/usr/share/applications/model-checker-go.desktop
+          [Desktop Entry]
+          Name=Model Checker Go
+          Comment=Gemini Key Inspector PRO
+          Exec=/usr/bin/model-checker-go
+          Icon=model-checker-go
+          Terminal=false
+          Type=Application
+          Categories=Utility;
+          EOF
+          
+          chmod +x deb-pkg/usr/bin/model-checker-go
+          dpkg-deb --build deb-pkg ModelChecker-Go_${VERSION}_amd64.deb
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-bin
+          path: ModelChecker-Go_*.deb
+
+  release:
+    needs: [build-windows, build-linux]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: assets
+          merge-multiple: true
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            assets/*.exe
+            assets/*.deb
+          body_path: CHANGELOG.md
+          token: ${{ secrets.GITHUB_TOKEN }}
