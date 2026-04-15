@@ -34,7 +34,6 @@ yarn-error.log*
 *.dll
 
 # Fortran compiled modules
-*.mod
 *.smod
 
 # Compiled Static libraries
