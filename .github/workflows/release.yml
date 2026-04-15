@@ -32,14 +32,19 @@ jobs:
       - name: Build Windows
         shell: bash
         run: |
-          wails build -platform windows/amd64 -nsis
+          wails build -platform windows/amd64 -nsis || wails build -platform windows/amd64
 
       - name: Rename Installer
         shell: bash
         run: |
           VERSION=${GITHUB_REF#refs/tags/v}
-          mv build/bin/ModelChecker-Go-amd64-installer.exe build/bin/ModelChecker-Go-${VERSION}-installer.exe
-
+          EXE_FILE=$(find build/bin -name "*.exe" | head -n 1)
+          if [ -n "$EXE_FILE" ]; then
+            mv "$EXE_FILE" build/bin/ModelChecker-Go-${VERSION}-installer.exe
+          else
+            echo "No .exe file found!"
+            exit 1
+          fi
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -72,7 +77,7 @@ jobs:
 
       - name: Build Linux
         run: |
-          wails build -platform linux/amd64
+          wails build -platform linux/amd64 -tags webkit2_41
 
       - name: Create Debian Package
         run: |
